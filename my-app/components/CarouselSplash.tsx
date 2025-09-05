@@ -33,11 +33,8 @@ const data: {
 const { height: windowHeight } = Dimensions.get("window");
 function CarouselSplash() {
   const scrollOffsetValue = useSharedValue<number>(0);
-  const carouselRef = React.useRef<any>(null);
   const progress = useSharedValue<number>(0);
-  const handlePaginationPress = (index: number) => {
-    carouselRef.current?.scrollTo({ index, animated: true });
-  };
+
   return (
     <View id="carousel-component">
       <Carousel
@@ -54,7 +51,6 @@ function CarouselSplash() {
         // width={Dimensions.get("window").width}
         height={windowHeight * 0.6}
         onProgressChange={progress}
-        onSnapToItem={(index: number) => console.log("current index:", index)}
         renderItem={({ item }) => (
           <CarouselContent
             id={item.id}

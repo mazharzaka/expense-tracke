@@ -7,14 +7,15 @@ const cors = require("cors");
 const passport = require("passport");
 const { default: mongoose } = require("mongoose");
 const MongoStore = require("connect-mongo");
+const session = require("express-session");
 dotenv.config();
 connectDB();
 
 const app = express();
 
 app.use(
-  passport.session({
-    secret: process.env.SESSION_SECRET,
+  session({
+    secret: process.env.SECRET || "fallbackSecret",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({

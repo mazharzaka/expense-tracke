@@ -4,7 +4,7 @@ import React from "react";
 import {
   Button,
   Image,
-  Pressable,
+  TouchableOpacity,
   ScrollView,
   StyleSheet,
   Text,
@@ -25,12 +25,12 @@ export default function HomeScreen() {
         <CarouselSplash />
       </View>
       <View style={{ flex: 1, alignItems: "center", marginTop: 20 }}>
-        <Pressable
+        <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push("/explore")}
+          onPress={() => router.push("/login")}
         >
           <Text style={styles.buttonText}>Let’s Go</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     lineHeight: 24,
-    // height: "100%",
     textAlign: "center",
 
     fontFamily: "inter",
