@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./src/config/db.config.js");
 const userRoutes = require("./src/routes/User.route.js");
-
+const transactionRoutes = require("./src/routes/Transaction.route.js");
 const cors = require("cors");
 const passport = require("passport");
 const { default: mongoose } = require("mongoose");
@@ -38,5 +38,6 @@ app.use(
   })
 );
 app.use("/api/auth", userRoutes);
+app.use("/api/transactions");
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

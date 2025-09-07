@@ -3,9 +3,11 @@ const express = require("express");
 const routerUser = express.Router();
 const { registerValidation } = require("../utils/Vaildation");
 const passport = require("passport");
+const { verifyToken } = require("../middleware/auth.middle");
+const upload = require("../middleware/multer.middle");
 require("../config/google");
 
-routerUser.post("/register", async (req, res) => {
+routerUser.post("/register", upload.single("avatar"), async (req, res) => {
   console.log(registerValidation);
   const { error } = registerValidation.validate(req.body);
   if (error) {
@@ -26,5 +28,7 @@ routerUser.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   UserController.loginByGoogle
 );
+
+routerUser.get("/profile/:id", verifyToken, UserController.getProfile);
 
 module.exports = routerUser;

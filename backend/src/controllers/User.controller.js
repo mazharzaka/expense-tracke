@@ -9,9 +9,14 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await hash.hashPassword(req.body.password);
+    console.log(req.body);
+
     const newUser = new User({
       name: req.body.name,
       password: hashedPassword,
+      email: req.body.email,
+      avatar: req.file.path || "",
+      googleId: req.body.googleId || "",
     });
     await newUser.save();
     return res.status(201).json({ message: "User registered successfully" });
@@ -46,6 +51,18 @@ exports.login = async (req, res) => {
     return res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error("Error logging in:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

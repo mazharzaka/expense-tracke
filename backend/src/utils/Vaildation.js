@@ -15,6 +15,11 @@ const registerValidation = Joi.object({
         "كلمة المرور يجب أن تحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص",
       "string.empty": "كلمة المرور مطلوبة",
     }),
+  email: Joi.string().email().required().messages({
+    "string.email": "يجب أن يكون البريد الإلكتروني صالحًا",
+    "string.empty": "البريد الإلكتروني مطلوب",
+  }),
+  avatar: Joi.string().uri().optional().allow(""),
 });
 
 module.exports = { registerValidation };
