@@ -1,12 +1,14 @@
 const Transaction = require("../models/Transaction");
 
 exports.createTransaction = (req, res) => {
+  console.log(req.user);
+
   const { amount, description, category, type } = req.body;
   const newTransaction = new Transaction({
     amount,
     description,
     category,
-    userId: req.user._id,
+    userId: req.user.id,
     type,
   });
   newTransaction
@@ -17,13 +19,13 @@ exports.createTransaction = (req, res) => {
     .catch((error) => res.status(500).json({ error: error.message }));
 };
 exports.getTransactions = (req, res) => {
-  Transaction.find({ userId: req.user._id })
+  Transaction.find({ userId: req.user.id })
     .then((transactions) => res.status(200).json(transactions))
     .catch((error) => res.status(500).json({ error: error.message }));
 };
 exports.deleteTransaction = (req, res) => {
   const { id } = req.params;
-  Transaction.findOneAndDelete({ _id: id, userId: req.user._id })
+  Transaction.findOneAndDelete({ _id: id, userId: req.user.id })
     .then((transaction) => {
       if (!transaction) {
         return res.status(404).json({ message: "Transaction not found" });
@@ -37,7 +39,7 @@ exports.updateTransaction = (req, res) => {
   const { id } = req.params;
   const { amount, description, category, type } = req.body;
   Transaction.findOneAndUpdate(
-    { _id: id, userId: req.user._id },
+    { _id: id, userId: req.user.id },
     { amount, description, category, type },
     { new: true }
   )
@@ -54,7 +56,7 @@ exports.updateTransaction = (req, res) => {
 
 exports.getTransactionById = (req, res) => {
   const { id } = req.params;
-  Transaction.findOne({ _id: id, userId: req.user._id })
+  Transaction.findOne({ _id: id, userId: req.user.id })
     .then((transaction) => {
       if (!transaction) {
         return res.status(404).json({ message: "Transaction not found" });

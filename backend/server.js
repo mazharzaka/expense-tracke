@@ -4,6 +4,7 @@ const connectDB = require("./src/config/db.config.js");
 const userRoutes = require("./src/routes/User.route.js");
 const transactionRoutes = require("./src/routes/Transaction.route.js");
 const cors = require("cors");
+const ngrok = require("ngrok");
 const passport = require("passport");
 const { default: mongoose } = require("mongoose");
 const MongoStore = require("connect-mongo");
@@ -38,6 +39,10 @@ app.use(
   })
 );
 app.use("/api/auth", userRoutes);
-app.use("/api/transactions");
+app.use("/api/transactions", transactionRoutes);
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, async () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  const url = await ngrok.connect(PORT);
+  console.log(`Ngrok Tunnel: ${url}`);
+});

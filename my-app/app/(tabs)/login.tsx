@@ -7,10 +7,24 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAuthLoginMutation } from "@/services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const login = () => {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginMutation] = useAuthLoginMutation();
+  const handleLogin = async () => {
+    try {
+      const res = await loginMutation({ name, password }).unwrap();
+      await AsyncStorage.setItem("token", res?.token);
+      console.log(res?.token);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -24,16 +38,18 @@ const login = () => {
         <TextInput
           style={styles.input}
           placeholder="Username"
+          onChangeText={setName}
           placeholderTextColor={"#B0B8BF"}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
-          secureTextEntry
+          onChangeText={setPassword}
           placeholderTextColor={"#B0B8BF"}
+          secureTextEntry
         />
         <View>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} onPress={handleLogin}>
             <LinearGradient
               colors={["#0E33F3", "#2F51FF"]}
               start={{ x: 0, y: 0 }}
