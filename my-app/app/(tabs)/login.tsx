@@ -11,16 +11,19 @@ import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAuthLoginMutation } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 const login = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [loginMutation] = useAuthLoginMutation();
+  const router = useRouter();
+
   const handleLogin = async () => {
     try {
       const res = await loginMutation({ name, password }).unwrap();
       await AsyncStorage.setItem("token", res?.token);
-      console.log(res?.token);
+      router.push("/explore");
     } catch (error) {
       console.error("Login failed", error);
     }

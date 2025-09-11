@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://9ef56a3cfaa0.ngrok-free.app/api/",
+    baseUrl: "https://4e8461849de6.ngrok-free.app/api/",
     prepareHeaders: async (headers) => {
       const token = await AsyncStorage.getItem("token");
 

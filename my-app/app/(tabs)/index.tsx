@@ -2,7 +2,6 @@ import CarouselSplash from "@/components/CarouselSplash";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
-  Button,
   Image,
   TouchableOpacity,
   ScrollView,
