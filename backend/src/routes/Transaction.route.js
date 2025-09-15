@@ -9,6 +9,11 @@ routerTransaction.post(
   transactionController.createTransaction
 );
 routerTransaction.get("/", verifyToken, transactionController.getTransactions);
+routerTransaction.get(
+  "/balance",
+  verifyToken,
+  transactionController.getBalance
+);
 routerTransaction.delete(
   "/:id",
   verifyToken,
