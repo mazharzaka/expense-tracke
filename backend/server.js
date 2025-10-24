@@ -43,6 +43,6 @@ app.use("/api/transactions", transactionRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  const url = await ngrok.connect(PORT);
-  console.log(`Ngrok Tunnel: ${url}`);
+  // const url = await ngrok.connect(PORT);
+  // console.log(`Ngrok Tunnel: ${url}`);
 });

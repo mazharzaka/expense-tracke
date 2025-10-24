@@ -61,12 +61,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#141D26",
     paddingHorizontal: 24,
+    gap: 32,
   },
   text: {
     color: "#fff",
   },
   Alltransaction: {
     marginTop: 32,
+    // backgroundColor: "#fff",
     gap: 32,
   },
   transaction: {
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
   transactionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 80,
+    marginTop: 32,
   },
   transactionText: {
     fontSize: 16,

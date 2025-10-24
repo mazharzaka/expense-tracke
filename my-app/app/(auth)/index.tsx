@@ -1,6 +1,10 @@
 import CarouselSplash from "@/components/CarouselSplash";
+import { loginAction, logoutAction } from "@/services/auth";
+import { store } from "@/services/store";
+import { isAccessTokenExpired } from "@/utils/isAccessTokenExpired";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   TouchableOpacity,
@@ -9,8 +13,32 @@ import {
   Text,
   View,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 export default function HomeScreen() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(
+    (state: ReturnType<typeof store.getState>) => state.auth.isLoggedIn
+  );
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+
+        const expired = await isAccessTokenExpired();
+        if (!token || expired) {
+          dispatch(logoutAction());
+        } else {
+          dispatch(loginAction(token));
+        }
+      } catch (err) {
+        console.log("Error checking token", err);
+      }
+    };
+
+    checkToken();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
@@ -26,7 +54,9 @@ export default function HomeScreen() {
       <View style={{ flex: 1, alignItems: "center", marginTop: 20 }}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push("/login")}
+          onPress={() =>
+            isLoggedIn ? router.push("/Home") : router.push("/login")
+          }
         >
           <Text style={styles.buttonText}>Let’s Go</Text>
         </TouchableOpacity>
@@ -48,8 +78,6 @@ const styles = StyleSheet.create({
     fontFamily: "inter",
   },
   content: {
-    // alignItems: "center",
-    // flex: 1,
     justifyContent: "center",
     flexDirection: "row",
     gap: 6,
@@ -69,7 +97,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     backgroundColor: "#0E33F3",
     justifyContent: "center",
-    // alignItems: "center",
     flex: 1,
     borderRadius: 8,
     width: "80%",
@@ -81,7 +108,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 24,
     textAlign: "center",
-
     fontFamily: "inter",
   },
 });

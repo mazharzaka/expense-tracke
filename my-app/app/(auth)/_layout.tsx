@@ -5,7 +5,7 @@ import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -26,15 +26,24 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="Home"
+          name="index"
           options={{
-            title: "Home",
+            tabBarStyle: { display: "none" },
+            href: null,
+          }}
+        />
+
+        <Tabs.Screen
+          name="login"
+          options={{
+            tabBarStyle: { display: "none" },
             tabBarIcon: ({ color }) => (
-              <FontAwesome name="home" size={24} color={color} />
+              <Ionicons name="log-in-outline" size={24} color={color} />
             ),
           }}
         />
       </Tabs>
+      {/* If you need stack navigation, create a separate file for stack and use <Stack.Screen> here or in that file */}
     </>
   );
 }

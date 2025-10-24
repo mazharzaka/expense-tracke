@@ -1,13 +1,14 @@
+import { isAccessTokenExpired } from "@/utils/isAccessTokenExpired";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://40ba612742d0.ngrok-free.app/api/",
+    baseUrl: "http://192.168.1.3:5000/api/",
     prepareHeaders: async (headers) => {
       const token = await AsyncStorage.getItem("token");
-
-      if (token) {
+      const expired = await isAccessTokenExpired();
+      if (token && !expired) {
         headers.set("authorization", `Bearer ${token}`);
       }
       return headers;
@@ -33,6 +34,13 @@ export const api = createApi({
     Alltransactions: builder.query({
       query: () => "transactions",
     }),
+    createTransaction: builder.mutation({
+      query: (transaction) => ({
+        url: "transactions",
+        method: "POST",
+        body: transaction,
+      }),
+    }),
   }),
 });
 
@@ -41,4 +49,5 @@ export const {
   useProfileQuery,
   useBalanceQuery,
   useAlltransactionsQuery,
+  useCreateTransactionMutation,
 } = api;

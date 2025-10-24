@@ -1,6 +1,15 @@
 import { useAlltransactionsQuery, useBalanceQuery } from "@/services/api";
 import { format } from "date-fns";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function TabTwoScreen() {
   const {
@@ -13,9 +22,14 @@ export default function TabTwoScreen() {
     isLoading: transactionsLoading,
     error: transactionsError,
   } = useAlltransactionsQuery({});
-
+  const router = useRouter();
   if (balanceLoading || transactionsLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#0E33F3" />
+        <Text style={styles.text}>Loading...</Text>
+      </View>
+    );
   }
 
   if (balanceError || transactionsError) {
@@ -73,7 +87,12 @@ export default function TabTwoScreen() {
         </View>
         <View style={styles.entries}>
           <View style={styles.headentries}>
-            <View style={styles.saving}>
+            <TouchableOpacity
+              style={styles.saving}
+              onPress={() => {
+                router.push("/Home/Transaction");
+              }}
+            >
               <View style={styles.uppersaving}>
                 <View style={styles.sicon}>
                   <Image
@@ -83,8 +102,13 @@ export default function TabTwoScreen() {
                 </View>
                 <Text style={styles.textsaving}>Savings</Text>
               </View>
-            </View>
-            <View style={styles.saving}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.saving}
+              onPress={() => {
+                router.push("/Home/Entries");
+              }}
+            >
               <View style={styles.uppersaving}>
                 <View style={styles.sicon}>
                   <Image
@@ -94,7 +118,7 @@ export default function TabTwoScreen() {
                 </View>
                 <Text style={styles.textsaving}>All</Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <View style={styles.saving}>
               <View style={styles.uppersaving}>
                 <View style={styles.sicon}>
@@ -150,6 +174,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#242D35",
+  },
+  loading: {
+    flex: 1,
+    backgroundColor: "#0F1B26",
+    alignItems: "center",
+    justifyContent: "center",
   },
   carousal: {
     marginTop: 32,
@@ -313,7 +343,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 14,
-    color: "#B0B8BF",
+    color: "#0e8fff8a",
     lineHeight: 20,
   },
   transactionValue: {
